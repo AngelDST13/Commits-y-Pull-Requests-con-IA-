@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OmniConvert Pro | Conversor de Unidades</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="dark-mode">
+
+  <!-- HEADER -->
+  <header class="app-header">
+    <div class="logo-container">
+      <span class="logo-icon">⚡</span>
+      <h1>OmniConvert <span>Pro</span></h1>
+    </div>
+    <div class="header-controls">
+      <button id="themeToggle" class="btn-theme" title="Cambiar Tema">🌙</button>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="app-container">
+
+    <!-- MENÚ / NAVEGACIÓN -->
+    <nav class="tabs-nav">
+      <button class="tab-btn active" data-tab="temperatura">
+        <span class="tab-icon">🌡️</span> Temperatura
+      </button>
+      <button class="tab-btn" data-tab="longitud">
+        <span class="tab-icon">📏</span> Longitud
+      </button>
+      <button class="tab-btn" data-tab="moneda">
+        <span class="tab-icon">💵</span> Monedas
+      </button>
+    </nav>
+
+    <div class="calculator-card">
+      <!-- ALERTAS Y VALIDACIONES -->
+      <div id="alertBox" class="alert-box hidden"></div>
+
+      <!-- SECCIÓN 1: TEMPERATURA -->
+      <section id="temperatura" class="tab-content active">
+        <h2>Conversor de Temperatura</h2>
+        <div class="converter-grid">
+          <div class="input-group">
+            <label for="tempInput">Valor:</label>
+            <input type="number" id="tempInput" placeholder="Ej. 25" step="any">
+          </div>
+          <div class="input-group">
+            <label for="tempFrom">De:</label>
+            <select id="tempFrom">
+              <option value="C">Celsius (°C)</option>
+              <option value="F">Fahrenheit (°F)</option>
+              <option value="K">Kelvin (K)</option>
+            </select>
+          </div>
+          <div class="swap-icon" id="swapTemp">⇄</div>
+          <div class="input-group">
+            <label for="tempTo">A:</label>
+            <select id="tempTo">
+              <option value="F">Fahrenheit (°F)</option>
+              <option value="C">Celsius (°C)</option>
+              <option value="K">Kelvin (K)</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn-convert" id="convertTempBtn">Convertir Temperatura</button>
+      </section>
+
+      <!-- SECCIÓN 2: LONGITUD -->
+      <section id="longitud" class="tab-content">
+        <h2>Conversor de Longitud</h2>
+        <div class="converter-grid">
+          <div class="input-group">
+            <label for="lengthInput">Valor:</label>
+            <input type="number" id="lengthInput" placeholder="Ej. 100" min="0" step="any">
+          </div>
+          <div class="input-group">
+            <label for="lengthFrom">De:</label>
+            <select id="lengthFrom">
+              <option value="m">Metros (m)</option>
+              <option value="km">Kilómetros (km)</option>
+              <option value="cm">Centímetros (cm)</option>
+              <option value="mm">Milímetros (mm)</option>
+              <option value="mi">Millas (mi)</option>
+              <option value="ft">Pies (ft)</option>
+              <option value="in">Pulgadas (in)</option>
+            </select>
+          </div>
+          <div class="swap-icon" id="swapLength">⇄</div>
+          <div class="input-group">
+            <label for="lengthTo">A:</label>
+            <select id="lengthTo">
+              <option value="km">Kilómetros (km)</option>
+              <option value="m">Metros (m)</option>
+              <option value="cm">Centímetros (cm)</option>
+              <option value="mm">Milímetros (mm)</option>
+              <option value="mi">Millas (mi)</option>
+              <option value="ft">Pies (ft)</option>
+              <option value="in">Pulgadas (in)</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn-convert" id="convertLengthBtn">Convertir Longitud</button>
+      </section>
+
+      <!-- SECCIÓN 3: MONEDA -->
+      <section id="moneda" class="tab-content">
+        <h2>Conversor de Moneda</h2>
+        <div class="converter-grid">
+          <div class="input-group">
+            <label for="currencyInput">Monto:</label>
+            <input type="number" id="currencyInput" placeholder="Ej. 50" min="0" step="any">
+          </div>
+          <div class="input-group">
+            <label for="currencyFrom">De:</label>
+            <select id="currencyFrom">
+              <option value="USD">Dólar (USD)</option>
+              <option value="EUR">Euro (EUR)</option>
+              <option value="MXN">Peso Mex (MXN)</option>
+              <option value="COP">Peso Col (COP)</option>
+              <option value="GBP">Libra (GBP)</option>
+            </select>
+          </div>
+          <div class="swap-icon" id="swapCurrency">⇄</div>
+          <div class="input-group">
+            <label for="currencyTo">A:</label>
+            <select id="currencyTo">
+              <option value="EUR">Euro (EUR)</option>
+              <option value="USD">Dólar (USD)</option>
+              <option value="MXN">Peso Mex (MXN)</option>
+              <option value="COP">Peso Col (COP)</option>
+              <option value="GBP">Libra (GBP)</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn-convert" id="convertCurrencyBtn">Convertir Moneda</button>
+      </section>
+
+      <!-- ÁREA DE RESULTADO CÓMODA -->
+      <div class="result-card hidden" id="resultCard">
+        <span class="result-label">Resultado:</span>
+        <div class="result-value" id="resultValue">0.00</div>
+      </div>
+    </div>
+
+    <!-- SECCIÓN HISTORIAL -->
+    <section class="history-card">
+      <div class="history-header">
+        <h3>📜 Historial Guardado</h3>
+        <button id="clearHistoryBtn" class="btn-clear">Limpiar Todo</button>
+      </div>
+      <ul id="historyList" class="history-list">
+        <!-- Generado dinámicamente -->
+      </ul>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="app-footer">
+    <p>&copy; 2026 OmniConvert Pro. Control de Versiones con IA y Git.</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
