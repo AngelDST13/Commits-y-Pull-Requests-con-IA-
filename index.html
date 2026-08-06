@@ -36,6 +36,9 @@
       <button class="tab-btn" data-tab="moneda">
         <span class="tab-icon">💵</span> Monedas
       </button>
+      <button class="tab-btn" data-tab="otras">
+        <span class="tab-icon">🔤</span> Otras Conversiones
+      </button>
     </nav>
 
     <div class="calculator-card">
@@ -141,6 +144,38 @@
         <button class="btn-convert" id="convertCurrencyBtn">Convertir Moneda</button>
       </section>
 
+      <!-- SECCIÓN 4: OTRAS CONVERSIONES -->
+      <section id="otras" class="tab-content">
+        <h2>Otras Conversiones</h2>
+        
+        <div class="sub-tabs">
+          <button class="sub-tab-btn active" data-subtab="morse">Código Morse</button>
+        </div>
+
+        <div id="morse-tool" class="sub-tab-content active">
+          <div class="converter-grid single-col">
+            <div class="input-group">
+              <label for="morseDirection">Modo de conversión:</label>
+              <select id="morseDirection">
+                <option value="textToMorse">Texto a Código Morse</option>
+                <option value="morseToText">Código Morse a Texto</option>
+              </select>
+            </div>
+
+            <div class="input-group">
+              <label for="morseInput">Entrada (Texto o Morse separado por espacios):</label>
+              <textarea 
+                id="morseInput" 
+                rows="3" 
+                placeholder="Ej. Hola mundo  ó  .... --- .-.. .-"
+                autocomplete="off"
+              ></textarea>
+            </div>
+          </div>
+          <button class="btn-convert" id="convertMorseBtn">Convertir Morse</button>
+        </div>
+      </section>
+
       <!-- ÁREA DE RESULTADO CÓMODA -->
       <div class="result-card hidden" id="resultCard">
         <span class="result-label">Resultado:</span>
@@ -158,7 +193,8 @@
         <!-- Generado dinámicamente por JavaScript -->
       </ul>
     </section>
-<!-- SECCIÓN SUGERENCIAS -->
+
+    <!-- SECCIÓN SUGERENCIAS -->
     <section class="feedback-card">
       <div class="feedback-header">
         <h3>💡 ¿Qué otra conversión te gustaría ver?</h3>
