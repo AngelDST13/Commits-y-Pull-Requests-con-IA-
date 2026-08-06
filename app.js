@@ -324,3 +324,41 @@ if (convertPressureBtn) {
     }
   });
 }
+
+// --- LÓGICA CONVERSIÓN DE LÍQUIDOS / VOLUMEN ---
+const convertLiquidBtn = document.getElementById('convertLiquidBtn');
+
+if (convertLiquidBtn) {
+  // Factores de conversión base hacia Litros (L)
+  const liquidRatesInLiters = {
+    l: 1,
+    ml: 0.001,
+    gal: 3.78541,
+    oz: 0.0295735,
+    cup: 0.24
+  };
+
+  convertLiquidBtn.addEventListener('click', () => {
+    const val = parseFloat(document.getElementById('liquidInput').value);
+    const from = document.getElementById('liquidFrom').value;
+    const to = document.getElementById('liquidTo').value;
+    const resultCard = document.getElementById('resultCard');
+    const resultValue = document.getElementById('resultValue');
+
+    if (isNaN(val)) {
+      alert('Por favor ingresa un valor numérico válido.');
+      return;
+    }
+
+    // Convertir origen -> Litros -> Destino
+    const valueInLiters = val * liquidRatesInLiters[from];
+    const converted = valueInLiters / liquidRatesInLiters[to];
+
+    resultValue.textContent = `${converted.toLocaleString('es-ES', { maximumFractionDigits: 4 })} ${to.toUpperCase()}`;
+    resultCard.classList.remove('hidden');
+
+    if (typeof saveToHistory === 'function') {
+      saveToHistory('Líquidos', `${val} ${from.toUpperCase()}`, `${converted.toFixed(4)} ${to.toUpperCase()}`);
+    }
+  });
+}
