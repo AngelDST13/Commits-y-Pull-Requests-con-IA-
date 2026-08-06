@@ -341,3 +341,31 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 });
+
+// --- LÓGICA CONVERSIÓN DE PESO / MASA ---
+  const convertWeightBtn = document.getElementById('convertWeightBtn');
+  if (convertWeightBtn) {
+    // Factores de conversión base hacia Kilogramos (kg)
+    const weightRatesInKg = {
+      kg: 1,
+      g: 0.001,
+      mg: 0.000001,
+      lb: 0.45359237,
+      oz: 0.028349523125
+    };
+
+    convertWeightBtn.addEventListener('click', () => {
+      hideAlert();
+      const val = parseFloat(document.getElementById('weightInput').value);
+      const from = document.getElementById('weightFrom').value;
+      const to = document.getElementById('weightTo').value;
+
+      if (isNaN(val) || val < 0) return showAlert('Por favor ingrese un valor de peso válido.');
+
+      // Convertir origen -> Kilogramos -> Destino
+      const valueInKg = val * weightRatesInKg[from];
+      const converted = valueInKg / weightRatesInKg[to];
+
+      displayResult(`${val} ${from.toUpperCase()} = ${converted.toFixed(4)} ${to.toUpperCase()}`);
+    });
+  }
