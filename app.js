@@ -28,12 +28,15 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // --- NAVEGACIÓN DE SUB-PESTAÑAS (OTRAS CONVERSIONES) ---
-  const subTabBtns = document.querySelectorAll('.sub-tab-btn');
-  const subTabContents = document.querySelectorAll('.sub-tab-content');
+  const subTabContainer = document.querySelector('.sub-tabs');
+  if (subTabContainer) {
+    subTabContainer.addEventListener('click', (e) => {
+      const btn = e.target.closest('.sub-tab-btn');
+      if (!btn) return;
 
-  subTabBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
       const targetSubTab = btn.getAttribute('data-subtab');
+      const subTabBtns = document.querySelectorAll('.sub-tab-btn');
+      const subTabContents = document.querySelectorAll('.sub-tab-content');
 
       subTabBtns.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
@@ -45,9 +48,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
 
+      hideAlert();
       if (resultCard) resultCard.classList.add('hidden');
     });
-  });
+  }
 
   // --- CAMBIO DE TEMA (CLARO/OSCURO) ---
   if (themeToggle) {
@@ -57,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // --- MANEJO DE ALERTAS ---
+  // --- MANEJO DE ALERTAS Y RESULTADOS ---
   function showAlert(msg) {
     if (!alertBox) return;
     alertBox.textContent = msg;
@@ -68,10 +72,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (alertBox) alertBox.classList.add('hidden');
   }
 
-  // --- MOSTRAR RESULTADO Y GUARDAR EN HISTORIAL (UNIFICADO) ---
   function displayResult(text) {
-    resultValue.textContent = text;
-    resultCard.classList.remove('hidden');
+    if (resultValue) resultValue.textContent = text;
+    if (resultCard) resultCard.classList.remove('hidden');
     saveToHistory(text);
   }
 
@@ -282,6 +285,44 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // --- LÓGICA CONVERSIÓN DE PESO / MASA ---
+  const convertWeightBtn = document.getElementById('convertWeightBtn');
+  if (convertWeightBtn) {
+    const weightRatesInKg = {
+      kg: 1,
+      g: 0.001,
+      mg: 0.000001,
+      lb: 0.45359237,
+      oz: 0.028349523125
+    };
+
+    convertWeightBtn.addEventListener('click', () => {
+      hideAlert();
+      const val = parseFloat(document.getElementById('weightInput').value);
+      const from = document.getElementById('weightFrom').value;
+      const to = document.getElementById('weightTo').value;
+
+      if (isNaN(val) || val < 0) return showAlert('Por favor ingrese un valor de peso válido.');
+
+      const valueInKg = val * weightRatesInKg[from];
+      const converted = valueInKg / weightRatesInKg[to];
+
+      displayResult(`${val} ${from.toUpperCase()} = ${converted.toFixed(4)} ${to.toUpperCase()}`);
+    });
+  }
+
+  // --- BOTONES DE INTERCAMBIO (SWAP) ---
+  const swapWeight = document.getElementById('swapWeight');
+  if (swapWeight) {
+    swapWeight.addEventListener('click', () => {
+      const fromSelect = document.getElementById('weightFrom');
+      const toSelect = document.getElementById('weightTo');
+      const temp = fromSelect.value;
+      fromSelect.value = toSelect.value;
+      toSelect.value = temp;
+    });
+  }
+
   // --- RESTRICCIÓN DE TECLAS EN CAMPOS NUMÉRICOS ---
   const numericInputs = document.querySelectorAll('input[type="number"]');
   numericInputs.forEach(input => {
@@ -341,31 +382,3 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 });
-
-// --- LÓGICA CONVERSIÓN DE PESO / MASA ---
-  const convertWeightBtn = document.getElementById('convertWeightBtn');
-  if (convertWeightBtn) {
-    // Factores de conversión base hacia Kilogramos (kg)
-    const weightRatesInKg = {
-      kg: 1,
-      g: 0.001,
-      mg: 0.000001,
-      lb: 0.45359237,
-      oz: 0.028349523125
-    };
-
-    convertWeightBtn.addEventListener('click', () => {
-      hideAlert();
-      const val = parseFloat(document.getElementById('weightInput').value);
-      const from = document.getElementById('weightFrom').value;
-      const to = document.getElementById('weightTo').value;
-
-      if (isNaN(val) || val < 0) return showAlert('Por favor ingrese un valor de peso válido.');
-
-      // Convertir origen -> Kilogramos -> Destino
-      const valueInKg = val * weightRatesInKg[from];
-      const converted = valueInKg / weightRatesInKg[to];
-
-      displayResult(`${val} ${from.toUpperCase()} = ${converted.toFixed(4)} ${to.toUpperCase()}`);
-    });
-  }
