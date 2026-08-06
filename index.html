@@ -144,15 +144,18 @@
         <button class="btn-convert" id="convertCurrencyBtn">Convertir Moneda</button>
       </section>
 
-      <!-- SECCIÓN 4: OTRAS CONVERSIONES -->
+     <!-- SECCIÓN 4: OTRAS CONVERSIONES -->
       <section id="otras" class="tab-content">
         <h2>Otras Conversiones</h2>
         
+        <!-- PESTAÑAS SECUNDARIAS -->
         <div class="sub-tabs">
           <button class="sub-tab-btn active" data-subtab="morse">Código Morse</button>
+          <button class="sub-tab-btn" data-subtab="presion">Presión</button>
         </div>
 
-        <div id="morse-tool" class="sub-tab-content active">
+        <!-- HERRAMIENTA 1: CÓDIGO MORSE -->
+        <div id="subtab-morse" class="sub-tab-content active">
           <div class="converter-grid single-col">
             <div class="input-group">
               <label for="morseDirection">Modo de conversión:</label>
@@ -173,6 +176,36 @@
             </div>
           </div>
           <button class="btn-convert" id="convertMorseBtn">Convertir Morse</button>
+        </div>
+
+        <!-- HERRAMIENTA 2: PRESIÓN -->
+        <div id="subtab-presion" class="sub-tab-content">
+          <div class="converter-grid">
+            <div class="input-group">
+              <label for="pressureInput">Valor:</label>
+              <input type="number" id="pressureInput" placeholder="Ej. 1013.25" min="0" step="any" inputmode="decimal" autocomplete="off">
+            </div>
+            <div class="input-group">
+              <label for="pressureFrom">De:</label>
+              <select id="pressureFrom">
+                <option value="pascal">Pascal (Pa)</option>
+                <option value="bar">Bar (bar)</option>
+                <option value="psi">PSI (lb/in²)</option>
+                <option value="atm">Atmósfera (atm)</option>
+              </select>
+            </div>
+            <div class="swap-icon" id="swapPressure">⇄</div>
+            <div class="input-group">
+              <label for="pressureTo">A:</label>
+              <select id="pressureTo">
+                <option value="psi">PSI (lb/in²)</option>
+                <option value="bar">Bar (bar)</option>
+                <option value="pascal">Pascal (Pa)</option>
+                <option value="atm">Atmósfera (atm)</option>
+              </select>
+            </div>
+          </div>
+          <button class="btn-convert" id="convertPressureBtn">Convertir Presión</button>
         </div>
       </section>
 
