@@ -143,3 +143,64 @@ document.addEventListener('DOMContentLoaded', () => {
 
   renderHistory();
 });
+
+// Agregar control de entrada en app.js para evitar letras en los campos numéricos
+const numericInputs = document.querySelectorAll('input[type="number"]');
+
+numericInputs.forEach(input => {
+  input.addEventListener('keydown', (e) => {
+    // Permitir teclas de control: backspace, delete, tab, escape, enter, flechas y punto/coma decimal
+    const allowedKeys = ['Backspace', 'Delete', 'Tab', 'Escape', 'Enter', 'ArrowLeft', 'ArrowRight', '.', ','];
+    
+    if (allowedKeys.includes(e.key) || (e.key >= '0' && e.key <= '9')) {
+      return; // Permite el ingreso
+    }
+    
+    // Bloquea cualquier otra tecla (incluidas letras como 'e')
+    e.preventDefault();
+  });
+});
+
+// --- MANEJO DEL FORMULARIO DE SUGERENCIAS ---
+  const feedbackForm = document.getElementById('feedbackForm');
+  const feedbackAlert = document.getElementById('feedbackAlert');
+
+  feedbackForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const name = document.getElementById('feedbackName').value.trim();
+    const email = document.getElementById('feedbackEmail').value.trim();
+    const message = document.getElementById('feedbackMessage').value.trim();
+
+    if (!name || !email || !message) {
+      feedbackAlert.textContent = 'Por favor completa todos los campos.';
+      feedbackAlert.classList.remove('hidden');
+      return;
+    }
+
+    // Guardar sugerencia localmente para simular el almacenamiento
+    const suggestions = JSON.parse(localStorage.getItem('ajs_suggestions')) || [];
+    suggestions.push({
+      name,
+      email,
+      message,
+      date: new Date().toLocaleString()
+    });
+    localStorage.setItem('ajs_suggestions', JSON.stringify(suggestions));
+
+    // Mostrar mensaje de éxito
+    feedbackAlert.style.borderColor = '#10b981';
+    feedbackAlert.style.color = '#6ee7b7';
+    feedbackAlert.style.background = 'rgba(16, 185, 129, 0.2)';
+    feedbackAlert.textContent = '¡Gracias por tu sugerencia! La hemos recibido correctamente.';
+    feedbackAlert.classList.remove('hidden');
+
+    // Resetear formulario
+    feedbackForm.reset();
+
+    // Ocultar mensaje después de 4 segundos
+    setTimeout(() => {
+      feedbackAlert.classList.add('hidden');
+      feedbackAlert.style = ''; // Restablecer estilos de alerta
+    }, 4000);
+  });
