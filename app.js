@@ -261,3 +261,66 @@ if (convertMorseBtn) {
     }
   });
 }
+
+// --- NAVEGACIÓN DE SUB-PESTAÑAS (Otras Conversiones) ---
+const subTabBtns = document.querySelectorAll('.sub-tab-btn');
+const subTabContents = document.querySelectorAll('.sub-tab-content');
+
+subTabBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const targetSubTab = btn.getAttribute('data-subtab');
+
+    // Cambiar clase activa en los botones
+    subTabBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    // Cambiar visibilidad de los paneles secundarios
+    subTabContents.forEach(content => {
+      content.classList.remove('active');
+      if (content.id === `subtab-${targetSubTab}`) {
+        content.classList.add('active');
+      }
+    });
+
+    // Ocultar la tarjeta de resultado al cambiar de sub-herramienta
+    const resultCard = document.getElementById('resultCard');
+    if (resultCard) resultCard.classList.add('hidden');
+  });
+});
+
+// --- LÓGICA CONVERSIÓN DE PRESIÓN ---
+const convertPressureBtn = document.getElementById('convertPressureBtn');
+
+if (convertPressureBtn) {
+  // Factores de conversión base hacia Pascales (Pa)
+  const pressureRatesInPascal = {
+    pascal: 1,
+    bar: 100000,
+    psi: 6894.76,
+    atm: 101325
+  };
+
+  convertPressureBtn.addEventListener('click', () => {
+    const val = parseFloat(document.getElementById('pressureInput').value);
+    const from = document.getElementById('pressureFrom').value;
+    const to = document.getElementById('pressureTo').value;
+    const resultCard = document.getElementById('resultCard');
+    const resultValue = document.getElementById('resultValue');
+
+    if (isNaN(val)) {
+      alert('Por favor ingresa un valor numérico válido.');
+      return;
+    }
+
+    // Convertir de la unidad de origen a Pascales y luego a la unidad destino
+    const valueInPascal = val * pressureRatesInPascal[from];
+    const converted = valueInPascal / pressureRatesInPascal[to];
+
+    resultValue.textContent = `${converted.toLocaleString('es-ES', { maximumFractionDigits: 4 })} ${to.toUpperCase()}`;
+    resultCard.classList.remove('hidden');
+
+    if (typeof saveToHistory === 'function') {
+      saveToHistory('Presión', `${val} ${from.toUpperCase()}`, `${converted.toFixed(4)} ${to.toUpperCase()}`);
+    }
+  });
+}
