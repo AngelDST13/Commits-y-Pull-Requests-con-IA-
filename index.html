@@ -158,6 +158,51 @@
         <!-- Generado dinámicamente por JavaScript -->
       </ul>
     </section>
+<!-- SECCIÓN SUGERENCIAS -->
+    <section class="feedback-card">
+      <div class="feedback-header">
+        <h3>💡 ¿Qué otra conversión te gustaría ver?</h3>
+        <p class="feedback-subtitle">Envíanos tus ideas de nuevas unidades o mejoras.</p>
+      </div>
+
+      <div id="feedbackAlert" class="alert-box hidden"></div>
+
+      <form id="feedbackForm" class="feedback-form">
+        <div class="input-group">
+          <label for="feedbackName">Nombre completo:</label>
+          <input 
+            type="text" 
+            id="feedbackName" 
+            placeholder="Ej. Ana García" 
+            required 
+            autocomplete="name"
+          >
+        </div>
+
+        <div class="input-group">
+          <label for="feedbackEmail">Correo electrónico:</label>
+          <input 
+            type="email" 
+            id="feedbackEmail" 
+            placeholder="ejemplo@correo.com" 
+            required 
+            autocomplete="email"
+          >
+        </div>
+
+        <div class="input-group">
+          <label for="feedbackMessage">Sugerencia de medida o conversión:</label>
+          <textarea 
+            id="feedbackMessage" 
+            rows="3" 
+            placeholder="Ej. Me gustaría que agregaran conversión de presión (PSI, Bar, Pascales) y volumen (Litros, Galones)." 
+            required
+          ></textarea>
+        </div>
+
+        <button type="submit" class="btn-submit">Enviar Sugerencia</button>
+      </form>
+    </section>
 
   </main>
 
