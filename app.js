@@ -204,3 +204,60 @@ numericInputs.forEach(input => {
       feedbackAlert.style = ''; // Restablecer estilos de alerta
     }, 4000);
   });
+
+  // --- DICCIONARIO CÓDIGO MORSE ---
+const morseDictionary = {
+  'A': '.-',    'B': '-...',  'C': '-.-.',  'D': '-..',   'E': '.',
+  'F': '..-.',  'G': '--.',   'H': '....',  'I': '..',    'J': '.---',
+  'K': '-.-',   'L': '.-..',  'M': '--',    'N': '-.',    'O': '---',
+  'P': '.--.',  'Q': '--.-',  'R': '.-.',   'S': '...',   'T': '-',
+  'U': '..-',   'V': '...-',  'W': '.--',   'X': '-..-',  'Y': '-.--',
+  'Z': '--..',  '1': '.----', '2': '..---', '3': '...--', '4': '....-',
+  '5': '.....', '6': '-....', '7': '--...', '8': '---..', '9': '----.',
+  '0': '-----', ' ': '/'
+};
+
+// Reversión para Morse -> Texto
+const textFromMorse = Object.fromEntries(
+  Object.entries(morseDictionary).map(([k, v]) => [v, k])
+);
+
+// --- LÓGICA DE CONVERSIÓN MORSE ---
+const convertMorseBtn = document.getElementById('convertMorseBtn');
+
+if (convertMorseBtn) {
+  convertMorseBtn.addEventListener('click', () => {
+    const direction = document.getElementById('morseDirection').value;
+    const input = document.getElementById('morseInput').value.trim();
+    const resultCard = document.getElementById('resultCard');
+    const resultValue = document.getElementById('resultValue');
+
+    if (!input) {
+      alert('Por favor ingresa un texto o código Morse válido.');
+      return;
+    }
+
+    let result = '';
+
+    if (direction === 'textToMorse') {
+      result = input
+        .toUpperCase()
+        .split('')
+        .map(char => morseDictionary[char] || char)
+        .join(' ');
+    } else {
+      result = input
+        .split(' ')
+        .map(code => textFromMorse[code] || (code === '/' ? ' ' : code))
+        .join('');
+    }
+
+    resultValue.textContent = result;
+    resultCard.classList.remove('hidden');
+    
+    // Guardar en Historial si la función existe
+    if (typeof saveToHistory === 'function') {
+      saveToHistory(`Morse (${direction === 'textToMorse' ? 'Texto→Morse' : 'Morse→Texto'})`, input, result);
+    }
+  });
+}
