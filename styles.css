@@ -412,3 +412,26 @@ textarea:focus {
   flex-direction: column;
   gap: 1rem;
 }
+/* Corrección en styles.css */
+.btn-convert {
+  width: 100%;
+  padding: 0.85rem;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 1.25rem;
+  transition: background 0.2s, transform 0.1s;
+  box-sizing: border-box;
+}
+
+.btn-convert:hover {
+  background: var(--primary-hover);
+}
+
+.btn-convert:active {
+  transform: scale(0.98);
+}
