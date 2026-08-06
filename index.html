@@ -145,7 +145,7 @@
       </section>
 
      <!-- SECCIÓN 4: OTRAS CONVERSIONES -->
-      <section id="otras" class="tab-content">
+        <section id="otras" class="tab-content">
         <h2>Otras Conversiones</h2>
         
         <!-- PESTAÑAS SECUNDARIAS -->
@@ -153,6 +153,7 @@
           <button class="sub-tab-btn active" data-subtab="morse">Código Morse</button>
           <button class="sub-tab-btn" data-subtab="presion">Presión</button>
           <button class="sub-tab-btn" data-subtab="liquidos">Líquidos / Volumen</button>
+          <button class="sub-tab-btn" data-subtab="peso">Peso / Masa</button>
         </div>
 
         <!-- HERRAMIENTA 1: CÓDIGO MORSE -->
@@ -239,6 +240,38 @@
             </div>
           </div>
           <button class="btn-convert" id="convertLiquidBtn">Convertir Líquidos</button>
+        </div>
+
+        <!-- HERRAMIENTA 4: PESO / MASA -->
+        <div id="subtab-peso" class="sub-tab-content">
+          <div class="converter-grid">
+            <div class="input-group">
+              <label for="weightInput">Valor:</label>
+              <input type="number" id="weightInput" placeholder="Ej. 70" min="0" step="any" inputmode="decimal" autocomplete="off">
+            </div>
+            <div class="input-group">
+              <label for="weightFrom">De:</label>
+              <select id="weightFrom">
+                <option value="kg">Kilogramos (kg)</option>
+                <option value="g">Gramos (g)</option>
+                <option value="mg">Miligramos (mg)</option>
+                <option value="lb">Libras (lb)</option>
+                <option value="oz">Onzas (oz)</option>
+              </select>
+            </div>
+            <div class="swap-icon" id="swapWeight">⇄</div>
+            <div class="input-group">
+              <label for="weightTo">A:</label>
+              <select id="weightTo">
+                <option value="g">Gramos (g)</option>
+                <option value="kg">Kilogramos (kg)</option>
+                <option value="mg">Miligramos (mg)</option>
+                <option value="lb">Libras (lb)</option>
+                <option value="oz">Onzas (oz)</option>
+              </select>
+            </div>
+          </div>
+          <button class="btn-convert" id="convertWeightBtn">Convertir Peso</button>
         </div>
 
       </section>
