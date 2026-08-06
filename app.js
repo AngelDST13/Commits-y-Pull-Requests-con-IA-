@@ -68,6 +68,52 @@ document.addEventListener('DOMContentLoaded', () => {
     if (alertBox) alertBox.classList.add('hidden');
   }
 
+  // --- MOSTRAR RESULTADO Y GUARDAR EN HISTORIAL (UNIFICADO) ---
+  function displayResult(text) {
+    resultValue.textContent = text;
+    resultCard.classList.remove('hidden');
+    saveToHistory(text);
+  }
+
+  // --- MANEJO DEL HISTORIAL ---
+  function saveToHistory(entryText) {
+    history.unshift({
+      text: entryText,
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    });
+
+    if (history.length > 10) history.pop();
+    localStorage.setItem('omni_history', JSON.stringify(history));
+    renderHistory();
+  }
+
+  function renderHistory() {
+    if (!historyList) return;
+    historyList.innerHTML = '';
+
+    if (history.length === 0) {
+      historyList.innerHTML = '<li class="history-item">No hay conversiones recientes.</li>';
+      return;
+    }
+
+    history.forEach(item => {
+      const li = document.createElement('li');
+      li.className = 'history-item';
+      li.innerHTML = `<span>${item.text}</span> <small style="color:var(--text-muted);">${item.time}</small>`;
+      historyList.appendChild(li);
+    });
+  }
+
+  if (clearHistoryBtn) {
+    clearHistoryBtn.addEventListener('click', () => {
+      history = [];
+      localStorage.removeItem('omni_history');
+      renderHistory();
+    });
+  }
+
+  renderHistory();
+
   // --- LÓGICA DE CONVERSIÓN: TEMPERATURA ---
   const convertTempBtn = document.getElementById('convertTempBtn');
   if (convertTempBtn) {
@@ -181,9 +227,7 @@ document.addEventListener('DOMContentLoaded', () => {
           .join('');
       }
 
-      resultValue.textContent = result;
-      resultCard.classList.remove('hidden');
-      saveToHistory('Morse', input, result);
+      displayResult(`${input} = ${result}`);
     });
   }
 
@@ -208,11 +252,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const valueInPascal = val * pressureRatesInPascal[from];
       const converted = valueInPascal / pressureRatesInPascal[to];
 
-      const resFormatted = `${converted.toLocaleString('es-ES', { maximumFractionDigits: 4 })} ${to.toUpperCase()}`;
-      resultValue.textContent = resFormatted;
-      resultCard.classList.remove('hidden');
-
-      saveToHistory('Presión', `${val} ${from.toUpperCase()}`, resFormatted);
+      displayResult(`${val} ${from.toUpperCase()} = ${converted.toFixed(4)} ${to.toUpperCase()}`);
     });
   }
 
@@ -238,67 +278,9 @@ document.addEventListener('DOMContentLoaded', () => {
       const valueInLiters = val * liquidRatesInLiters[from];
       const converted = valueInLiters / liquidRatesInLiters[to];
 
-      const resFormatted = `${converted.toLocaleString('es-ES', { maximumFractionDigits: 4 })} ${to.toUpperCase()}`;
-      resultValue.textContent = resFormatted;
-      resultCard.classList.remove('hidden');
-
-      saveToHistory('Líquidos', `${val} ${from.toUpperCase()}`, resFormatted);
+      displayResult(`${val} ${from.toUpperCase()} = ${converted.toFixed(4)} ${to.toUpperCase()}`);
     });
   }
-
-  // --- MOSTRAR RESULTADOS GENERALES ---
-  function displayResult(text) {
-    resultValue.textContent = text;
-    resultCard.classList.remove('hidden');
-    saveToHistory(text);
-  }
-
-  // --- MANEJO DEL HISTORIAL ---
-  function saveToHistory(tipoOrText, origen, resultado) {
-    let textEntry = '';
-
-    if (origen !== undefined && resultado !== undefined) {
-      textEntry = `[${tipoOrText}] ${origen} ➔ ${resultado}`;
-    } else {
-      textEntry = tipoOrText;
-    }
-
-    history.unshift({
-      text: textEntry,
-      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-    });
-
-    if (history.length > 10) history.pop();
-    localStorage.setItem('omni_history', JSON.stringify(history));
-    renderHistory();
-  }
-
-  function renderHistory() {
-    if (!historyList) return;
-    historyList.innerHTML = '';
-
-    if (history.length === 0) {
-      historyList.innerHTML = '<li class="history-item">No hay conversiones recientes.</li>';
-      return;
-    }
-
-    history.forEach(item => {
-      const li = document.createElement('li');
-      li.className = 'history-item';
-      li.innerHTML = `<span>${item.text}</span> <small style="color:var(--text-muted);">${item.time}</small>`;
-      historyList.appendChild(li);
-    });
-  }
-
-  if (clearHistoryBtn) {
-    clearHistoryBtn.addEventListener('click', () => {
-      history = [];
-      localStorage.removeItem('omni_history');
-      renderHistory();
-    });
-  }
-
-  renderHistory();
 
   // --- RESTRICCIÓN DE TECLAS EN CAMPOS NUMÉRICOS ---
   const numericInputs = document.querySelectorAll('input[type="number"]');
